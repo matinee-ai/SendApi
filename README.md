@@ -1,0 +1,554 @@
+# SendApi - Desktop API Testing Application
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![PySide6](https://img.shields.io/badge/PySide6-6.6.1+-green.svg)](https://doc.qt.io/qtforpython/)
+
+A powerful, feature-rich desktop API testing application built with Python and PySide6. SendApi provides a comprehensive interface for testing APIs with support for collections, environments, pre-request scripts, automated testing, and batch execution.
+
+## 🚀 Features
+
+### Core Features
+- **HTTP Request Support**: GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
+- **Request Configuration**: Headers, parameters, body (raw, form-data, x-www-form-urlencoded)
+- **Response Display**: Status codes, headers, body with syntax highlighting
+- **Collections**: Organize requests into collections and folders for better management
+- **Environments**: Manage environment variables for different deployment stages
+- **Pre-request Scripts**: Execute JavaScript code before sending requests
+- **Test Scripts**: Write automated tests for API responses with detailed reporting
+- **Import/Export**: Import and export collections in JSON format
+
+### Advanced Features
+- **Environment Variables**: Use `{{variable}}` syntax in URLs, headers, and body
+- **Request History**: Track and manage previous requests
+- **Response Timing**: Measure and display response times
+- **JSON Formatting**: Automatic JSON formatting for responses
+- **Error Handling**: Comprehensive error reporting and handling
+- **Batch Testing**: Run all requests in a collection or folder with detailed results
+- **cURL Export**: Export requests as cURL commands
+- **Response Saving**: Save responses in their original format
+- **Test Generation**: Automatically generate standard tests for endpoints
+- **Real-time Updates**: Live status updates during batch execution
+
+### Import/Export Support
+- **Postman Collections**: Import Postman collection files with full folder structure
+- **Postman Environments**: Import Postman environment files
+- **Postman Workspaces**: Import complete Postman workspaces
+- **Native Format**: Export in SendApi's native JSON format
+- **cURL Commands**: Export individual requests as cURL commands
+
+## 📋 Requirements
+
+- **Python**: 3.8 or higher (3.13 supported)
+- **Operating System**: Windows, macOS, or Linux
+- **Memory**: Minimum 512MB RAM
+- **Storage**: 100MB free space
+
+## 🛠️ Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package installer)
+
+### Quick Installation
+
+1. **Clone or download the project**
+   ```bash
+   git clone <repository-url>
+   cd PythonProject
+   ```
+
+2. **Create a virtual environment (recommended)**
+   ```bash
+   python -m venv .venv
+   ```
+
+3. **Activate the virtual environment**
+   
+   On macOS/Linux:
+   ```bash
+   source .venv/bin/activate
+   ```
+   
+   On Windows:
+   ```bash
+   .venv\Scripts\activate
+   ```
+
+4. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **Run the application**
+   ```bash
+   python main.py
+   ```
+
+### Package Installation
+
+You can also install SendApi as a Python package:
+
+```bash
+pip install -e .
+```
+
+Then run:
+```bash
+sendapi
+```
+
+## 🏗️ Building Executables
+
+### Building for Windows (.exe)
+
+1. **Run the build script**:
+   ```bash
+   ./build_windows.bat
+   ```
+
+2. **Or manually**:
+   ```bash
+   pip install pyinstaller==6.15.0
+   pyinstaller sendapi.spec
+   ```
+
+3. **Find the executable**:
+   - Location: `dist/SendApi.exe`
+   - Size: ~50-100MB
+
+### Building for macOS (.dmg)
+
+1. **Run the build script**:
+   ```bash
+   ./build_macos.sh
+   ```
+
+2. **Or manually**:
+   ```bash
+   pip install pyinstaller==6.15.0
+   pyinstaller sendapi.spec
+   hdiutil create -volname "SendApi" -srcfolder "dist/SendApi.app" -ov -format UDZO "SendApi.dmg"
+   ```
+
+3. **Find the files**:
+   - App: `dist/SendApi.app`
+   - DMG: `SendApi.dmg`
+   - Size: ~100-200MB
+
+For detailed build instructions, see [BUILD_GUIDE.md](BUILD_GUIDE.md).
+
+## 📖 Usage Guide
+
+### Getting Started
+
+1. **Launch the Application**
+   - Run `python main.py` from the project directory
+   - The application window will open with a clean interface
+
+2. **Create Your First Collection**
+   - Right-click in the sidebar and select "New Collection"
+   - Enter a name for your collection
+   - The collection will appear in the sidebar
+
+3. **Add a Request**
+   - Right-click on a collection and select "Add Request"
+   - Enter a name for your request
+   - Configure the request details
+
+4. **Configure the Request**
+   - Select the HTTP method (GET, POST, etc.)
+   - Enter the URL
+   - Add headers, parameters, or body as needed
+   - Click "Send" to execute the request
+
+### Working with Collections
+
+**Creating Collections**
+- Right-click in the sidebar to create new collections
+- Collections help organize related API requests
+
+**Managing Requests**
+- Right-click on a collection to add new requests
+- Right-click on a request to rename, duplicate, or delete it
+- Double-click a request to open it in the request panel
+
+**Folder Organization**
+- Right-click on a collection to add folders
+- Organize requests within folders for better structure
+- Run all requests in a folder with "Run All Requests"
+
+**Importing/Exporting**
+- Use the Import button to import JSON collections
+- Right-click on collections to export them
+- Supports standard Postman collection format
+
+### Working with Environments
+
+**Creating Environments**
+- Use the environment dropdown in the sidebar
+- Click "New Environment" to create a new environment
+
+**Managing Variables**
+- Select an environment from the dropdown
+- Add key-value pairs for your variables
+- Variables can be used with `{{variable_name}}` syntax
+
+**Using Environment Variables**
+- In URLs: `https://{{base_url}}/api/users`
+- In headers: `Authorization: Bearer {{token}}`
+- In body: `{"user_id": "{{user_id}}"}`
+
+### Pre-request Scripts
+
+Pre-request scripts allow you to execute JavaScript code before sending a request:
+
+```javascript
+// Set environment variables
+pm.environment.set("timestamp", new Date().getTime());
+
+// Generate dynamic values
+pm.environment.set("random_id", Math.random().toString(36).substr(2, 9));
+
+// Modify request data
+pm.request.headers.add({
+    key: "X-Custom-Header",
+    value: "dynamic-value"
+});
+```
+
+### Test Scripts
+
+Write automated tests for your API responses:
+
+```javascript
+// Test status code
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+// Test response time
+pm.test("Response time is less than 200ms", function () {
+    pm.expect(pm.response.responseTime).to.be.below(200);
+});
+
+// Test JSON response
+pm.test("Response is valid JSON", function () {
+    pm.response.to.be.json;
+});
+
+// Test response body
+pm.test("Response contains expected data", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData).to.have.property('success');
+    pm.expect(jsonData.success).to.eql(true);
+});
+```
+
+### Batch Testing
+
+**Running All Requests**
+- Right-click on a collection or folder
+- Select "Run All Requests"
+- View results in the Batch Testing tab
+
+**Batch Testing Features**
+- Real-time progress updates
+- Individual request status tracking
+- Test result summaries
+- Response time measurements
+- Color-coded pass/fail indicators
+
+**Test Results Display**
+- Shows `X/Y tests passed` format
+- Green for passed tests, red for failed
+- Detailed test result messages
+- Response time and status code information
+
+### Request Configuration
+
+**Headers Tab**
+- Add custom HTTP headers
+- Common headers like Content-Type, Authorization, etc.
+
+**Params Tab**
+- Add URL query parameters
+- Parameters will be automatically appended to the URL
+
+**Body Tab**
+- **None**: No body content
+- **Form Data**: Key-value pairs for form submissions
+- **x-www-form-urlencoded**: URL-encoded form data
+- **Raw**: Raw text/JSON content
+
+**Pre-request Script Tab**
+- Write JavaScript code to execute before the request
+- Useful for setting environment variables or modifying request data
+
+**Tests Tab**
+- Write automated tests for the response
+- Tests run automatically after receiving the response
+
+### Advanced Features
+
+**cURL Export**
+- Right-click on a request
+- Select "Export as cURL"
+- Copy the generated cURL command
+
+**Response Saving**
+- Click "Save Response" in the response panel
+- Choose the format and location
+- Save responses for later analysis
+
+**Test Generation**
+- Right-click on a request or folder
+- Select "Create Tests"
+- Automatically generates standard tests:
+  - Status code is 200
+  - Response time is less than 1000ms
+  - Content-Type is present
+  - Status code name has string OK
+
+## 🧪 Testing
+
+SendApi includes a comprehensive test suite to ensure reliability and functionality.
+
+### Running Tests
+
+**Run all tests**:
+```bash
+python3 run_tests.py --all
+```
+
+**Run unit tests only**:
+```bash
+python3 run_tests.py --unit
+```
+
+**Run integration tests only**:
+```bash
+python3 run_tests.py --integration
+```
+
+**Run specific test file**:
+```bash
+python3 run_tests.py --test test_models
+```
+
+**Using pytest**:
+```bash
+pytest tests/ -v
+```
+
+**With coverage**:
+```bash
+pytest tests/ --cov=src --cov-report=html
+```
+
+### Test Categories
+
+- **Unit Tests**: Individual component testing
+- **Integration Tests**: End-to-end workflow testing
+- **UI Tests**: User interface component testing
+- **Import/Export Tests**: Data format compatibility testing
+
+For detailed testing information, see [TESTING.md](TESTING.md).
+
+## 📁 Project Structure
+
+```
+PythonProject/
+├── main.py                     # Application entry point
+├── requirements.txt            # Python dependencies
+├── setup.py                    # Package setup configuration
+├── sendapi.spec               # PyInstaller specification
+├── LICENSE                    # MIT License
+├── README.md                  # This file
+├── BUILD_GUIDE.md            # Build instructions
+├── TESTING.md                # Testing guide
+├── TROUBLESHOOTING.md        # Troubleshooting guide
+├── run_tests.py              # Test runner script
+├── pytest.ini               # pytest configuration
+├── build_windows.bat         # Windows build script
+├── build_macos.sh            # macOS build script
+├── src/                      # Source code directory
+│   ├── __init__.py
+│   ├── main_window.py        # Main application window
+│   ├── models.py             # Data models (Request, Collection, Environment)
+│   ├── sidebar.py            # Sidebar component
+│   ├── request_panel.py      # Request configuration panel
+│   ├── response_panel.py     # Response display panel
+│   ├── environment_panel.py  # Environment management panel
+│   ├── request_runner.py     # HTTP request execution
+│   ├── batch_request_runner.py # Batch request execution
+│   └── collection_importer.py # Import/export functionality
+├── tests/                    # Test suite
+│   ├── __init__.py
+│   ├── test_models.py        # Unit tests for data models
+│   ├── test_request_runner.py # Unit tests for request execution
+│   ├── test_batch_request_runner.py # Unit tests for batch execution
+│   ├── test_postman_importer.py # Unit tests for import functionality
+│   ├── test_ui_components.py # Unit tests for UI components
+│   └── test_integration.py   # Integration tests
+├── examples/                 # Example files
+│   ├── postman_sample_collection.json
+│   ├── postman_sample_environment.json
+│   └── postman_workspace.json
+├── collections.json          # Saved collections (auto-generated)
+└── environments.json         # Saved environments (auto-generated)
+```
+
+## ⚙️ Configuration
+
+The application automatically saves your data to:
+- `collections.json`: All your collections and requests
+- `environments.json`: All your environments and variables
+
+These files are created automatically when you save your first collection or environment.
+
+## 🔧 Development
+
+### Adding New Features
+
+The application is built with a modular architecture:
+
+- **Models** (`src/models.py`): Data structures for requests, collections, and environments
+- **UI Components**: Each panel is a separate class for easy maintenance
+- **Request Runner**: Handles HTTP requests in a separate thread
+- **Batch Runner**: Manages sequential execution of multiple requests
+
+### Extending the Application
+
+To add new features:
+
+1. **New HTTP Methods**: Add to the method combo box in `request_panel.py`
+2. **New Body Types**: Extend the body type handling in `request_runner.py`
+3. **New Test Functions**: Add to the test processing in `request_runner.py`
+4. **UI Improvements**: Modify the respective panel classes
+
+### Code Style
+
+- Follow PEP 8 guidelines
+- Use type hints where appropriate
+- Add docstrings to functions and classes
+- Write tests for new features
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Import Error: No module named 'PySide6'**
+- Make sure you've installed the requirements: `pip install -r requirements.txt`
+- Ensure you're using Python 3.8 or higher
+
+**Application won't start**
+- Check that all dependencies are installed
+- Try running with Python 3.8+: `python3 main.py`
+- Check the console for error messages
+
+**Requests fail**
+- Check your internet connection
+- Verify the URL is correct
+- Check if the API requires authentication
+- Review the response panel for error details
+
+**Environment variables not working**
+- Make sure you've selected an environment from the dropdown
+- Use the correct syntax: `{{variable_name}}`
+- Check that the variable exists in the selected environment
+
+**Batch testing issues**
+- Ensure all requests have valid URLs
+- Check that environment variables are properly set
+- Review the batch testing tab for detailed error messages
+
+**Import/Export problems**
+- Verify the JSON file format is correct
+- Check that the file is not corrupted
+- Ensure the file has the correct permissions
+
+For more detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+### How to Contribute
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature-name`
+3. **Make your changes**
+4. **Add tests** for new functionality
+5. **Run the test suite**: `python3 run_tests.py --all`
+6. **Commit your changes**: `git commit -am 'Add feature'`
+7. **Push to the branch**: `git push origin feature-name`
+8. **Submit a pull request**
+
+### Development Setup
+
+1. **Clone the repository**
+2. **Install dependencies**: `pip install -r requirements.txt`
+3. **Install development dependencies**: `pip install pytest pytest-qt pytest-cov pytest-mock`
+4. **Run tests**: `python3 run_tests.py --all`
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+Copyright (c) 2024 SendApi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## 📞 Support
+
+For support and questions:
+- Open an issue on the project repository
+- Check the troubleshooting section above
+- Review the usage examples in this README
+- Consult the [TESTING.md](TESTING.md) for testing-related questions
+- Check [BUILD_GUIDE.md](BUILD_GUIDE.md) for build-related issues
+
+## 🗺️ Roadmap
+
+### Planned Features
+- [ ] GraphQL support
+- [ ] WebSocket testing
+- [ ] API documentation generation
+- [ ] Team collaboration features
+- [ ] Cloud synchronization
+- [ ] Plugin system
+- [ ] Custom themes
+- [ ] Performance testing tools
+
+### Known Issues
+- [ ] Some complex Postman scripts may not parse correctly
+- [ ] Large response bodies may slow down the UI
+- [ ] Network timeouts on slow connections
+
+## 🙏 Acknowledgments
+
+- Built with [PySide6](https://doc.qt.io/qtforpython/) for the GUI
+- Uses [requests](https://requests.readthedocs.io/) for HTTP operations
+- Inspired by popular API testing tools
+- Thanks to all contributors and users
+
+---
+
+**SendApi** - Making API testing simple, powerful, and efficient. 
