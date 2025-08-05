@@ -36,7 +36,7 @@ jobs:
         safety check --full-report
         
     - name: Upload Safety report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: safety-report
@@ -48,7 +48,7 @@ jobs:
         bandit -r src/ -f txt
         
     - name: Upload Bandit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: bandit-report
@@ -60,7 +60,7 @@ jobs:
         semgrep ci --config auto
         
     - name: Upload Semgrep report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: semgrep-report
@@ -111,7 +111,7 @@ jobs:
         pytest tests/ --cov=src --cov-report=xml --cov-report=html
         
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: htmlcov/
@@ -140,7 +140,7 @@ jobs:
         pip-audit
         
     - name: Upload pip-audit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: pip-audit-report
@@ -151,7 +151,7 @@ jobs:
         pip list --outdated --format=json > outdated-packages.json
         
     - name: Upload outdated packages report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: outdated-packages
         path: outdated-packages.json
@@ -200,7 +200,7 @@ jobs:
     
     steps:
     - name: Download all reports
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       
     - name: Create security summary
       run: |
@@ -229,7 +229,7 @@ jobs:
         fi
         
     - name: Upload security summary
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-summary
         path: security-summary.md 
