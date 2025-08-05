@@ -173,7 +173,7 @@ jobs:
         pip list --outdated --format=json > outdated-packages.json
         
     - name: Upload outdated packages report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: outdated-packages-${{ github.run_number }}
         path: outdated-packages.json
