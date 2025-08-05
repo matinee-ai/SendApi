@@ -1,0 +1,155 @@
+# Semgrep configuration file for SendApi project
+# This file configures static analysis security scanning
+
+rules:
+  # Python security rules
+  - id: python.security.audit.unsafe-deserialization.pickle
+    pattern: pickle.loads(...)
+    message: "Unsafe deserialization with pickle.loads()"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.unsafe-deserialization.yaml
+    pattern: yaml.load(...)
+    message: "Unsafe YAML deserialization"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.unsafe-deserialization.json
+    pattern: json.loads(...)
+    message: "Potentially unsafe JSON deserialization"
+    severity: WARNING
+    languages: [python]
+
+  - id: python.security.audit.exec.arbitrary-exec
+    pattern: exec(...)
+    message: "Arbitrary code execution with exec()"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.eval.arbitrary-eval
+    pattern: eval(...)
+    message: "Arbitrary code execution with eval()"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.os.system.arbitrary-system
+    pattern: os.system(...)
+    message: "Arbitrary system command execution"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.subprocess.shell-true
+    pattern: subprocess.run(..., shell=True)
+    message: "Shell command execution with shell=True"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.sql-injection
+    pattern: |
+      cursor.execute(f"...{...}...")
+    message: "Potential SQL injection with f-string"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.path-traversal
+    pattern: |
+      open(...)
+    message: "Potential path traversal vulnerability"
+    severity: WARNING
+    languages: [python]
+
+  - id: python.security.audit.weak-crypto
+    pattern: |
+      hashlib.md5(...)
+    message: "Weak cryptographic hash (MD5)"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.weak-crypto-sha1
+    pattern: |
+      hashlib.sha1(...)
+    message: "Weak cryptographic hash (SHA1)"
+    severity: WARNING
+    languages: [python]
+
+  - id: python.security.audit.hardcoded-secrets
+    pattern: |
+      password = "..."
+      api_key = "..."
+      secret = "..."
+    message: "Hardcoded secrets detected"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.unsafe-requests
+    pattern: |
+      requests.get(..., verify=False)
+    message: "SSL verification disabled"
+    severity: ERROR
+    languages: [python]
+
+  - id: python.security.audit.unsafe-requests-urllib
+    pattern: |
+      urllib.request.urlopen(...)
+    message: "Unsafe URL opening without verification"
+    severity: WARNING
+    languages: [python]
+
+  # Code quality rules
+  - id: python.correctness.unused-import
+    pattern: |
+      import ...
+    message: "Unused import detected"
+    severity: WARNING
+    languages: [python]
+
+  - id: python.correctness.unused-variable
+    pattern: |
+      def ...(...):
+        ... = ...
+    message: "Unused variable detected"
+    severity: WARNING
+    languages: [python]
+
+  - id: python.correctness.bad-except-order
+    pattern: |
+      except Exception:
+        ...
+      except ...:
+        ...
+    message: "Exception order may hide specific exceptions"
+    severity: WARNING
+    languages: [python]
+
+  # Performance rules
+  - id: python.performance.list-comprehension
+    pattern: |
+      [x for x in ... if ...]
+    message: "Consider using list comprehension for better performance"
+    severity: INFO
+    languages: [python]
+
+# Exclude patterns
+exclude:
+  - "tests/"
+  - "venv/"
+  - ".venv/"
+  - "env/"
+  - ".env/"
+  - "__pycache__/"
+  - ".git/"
+  - "build/"
+  - "dist/"
+  - "*.egg-info/"
+
+# Include patterns
+include:
+  - "src/**/*.py"
+  - "*.py"
+
+# Output configuration
+output:
+  format: json
+  output_file: semgrep-report.json
+  verbose: true 
