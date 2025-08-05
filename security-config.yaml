@@ -1,0 +1,136 @@
+# Security Configuration for SendApi Project
+# This file defines security policies, settings, and thresholds
+
+security:
+  # Vulnerability scanning thresholds
+  vulnerability_thresholds:
+    critical: 0      # No critical vulnerabilities allowed
+    high: 0          # No high severity vulnerabilities allowed
+    medium: 5        # Maximum 5 medium severity vulnerabilities
+    low: 20          # Maximum 20 low severity vulnerabilities
+
+  # Dependency security
+  dependencies:
+    auto_update: false          # Don't auto-update dependencies
+    require_security_audit: true # Require security audit for new dependencies
+    allowed_sources:
+      - "PyPI"
+      - "GitHub"
+    blocked_sources:
+      - "untrusted-repo.com"
+      - "malicious-package.org"
+
+  # Code security policies
+  code_security:
+    forbid_hardcoded_secrets: true
+    require_input_validation: true
+    require_output_encoding: true
+    forbid_unsafe_deserialization: true
+    require_secure_random: true
+    forbid_weak_crypto: true
+
+  # API security
+  api_security:
+    require_https: true
+    require_authentication: true
+    require_rate_limiting: true
+    forbid_sql_injection: true
+    require_input_sanitization: true
+
+  # File security
+  file_security:
+    forbid_path_traversal: true
+    require_file_validation: true
+    allowed_extensions:
+      - ".json"
+      - ".yaml"
+      - ".yml"
+      - ".txt"
+      - ".md"
+    blocked_extensions:
+      - ".exe"
+      - ".bat"
+      - ".sh"
+      - ".pyc"
+
+  # Network security
+  network_security:
+    require_ssl_verification: true
+    forbid_plain_text_passwords: true
+    require_secure_headers: true
+    allowed_protocols:
+      - "https"
+      - "wss"
+    blocked_protocols:
+      - "http"
+      - "ws"
+      - "ftp"
+
+  # Authentication and authorization
+  auth:
+    require_strong_passwords: true
+    require_mfa: false
+    session_timeout: 3600  # 1 hour
+    max_login_attempts: 5
+    password_history: 5
+
+  # Logging and monitoring
+  logging:
+    log_security_events: true
+    log_authentication: true
+    log_authorization: true
+    log_data_access: true
+    retention_days: 90
+
+  # Compliance
+  compliance:
+    gdpr_compliant: true
+    sox_compliant: false
+    hipaa_compliant: false
+    pci_compliant: false
+
+  # Incident response
+  incident_response:
+    auto_block_suspicious_ips: true
+    notify_on_security_events: true
+    escalation_threshold: 3
+    response_time_minutes: 30
+
+  # Testing requirements
+  testing:
+    require_security_tests: true
+    require_penetration_testing: false
+    require_code_review: true
+    require_security_review: true
+
+  # Deployment security
+  deployment:
+    require_signed_commits: true
+    require_branch_protection: true
+    require_status_checks: true
+    forbid_force_push: true
+    require_approval: true
+
+  # Monitoring and alerting
+  monitoring:
+    monitor_dependencies: true
+    monitor_secrets: true
+    monitor_vulnerabilities: true
+    alert_on_critical: true
+    alert_on_high: true
+    alert_on_medium: false
+    alert_on_low: false
+
+  # Backup and recovery
+  backup:
+    require_encrypted_backups: true
+    backup_frequency: "daily"
+    retention_period: "1 year"
+    test_restore: true
+
+  # Documentation requirements
+  documentation:
+    require_security_docs: true
+    require_api_docs: true
+    require_change_log: true
+    require_incident_reports: true 
