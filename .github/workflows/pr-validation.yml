@@ -47,7 +47,7 @@ jobs:
         pip-audit
         
     - name: Upload security reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: security-reports-${{ github.run_number }}
@@ -121,7 +121,7 @@ jobs:
         pytest tests/ --cov=src --cov-report=xml --cov-report=html --cov-fail-under=80
         
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report-${{ github.run_number }}
         path: htmlcov/
@@ -186,7 +186,7 @@ jobs:
     
     steps:
     - name: Download all reports
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       
     - name: Create security summary
       run: |
@@ -238,7 +238,7 @@ jobs:
         echo "- Ensure test coverage meets requirements" >> security-summary.md
         
     - name: Upload security summary
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-summary-${{ github.run_number }}
         path: security-summary.md
