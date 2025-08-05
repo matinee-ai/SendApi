@@ -1,36 +1,36 @@
 # Security scanning and analysis tools
-safety==2.3.5
-bandit==1.7.5
-semgrep==1.50.0
-pip-audit==2.6.1
+safety>=2.3.0
+bandit>=1.7.0
+semgrep>=1.50.0
+pip-audit>=2.6.0
 
 # Code quality and linting tools
-flake8==7.0.0
-black==23.12.1
-isort==5.13.2
-mypy==1.8.0
-pylint==3.0.3
+flake8>=7.0.0
+black>=23.12.0
+isort>=5.13.0
+mypy>=1.8.0
+pylint>=3.0.0
 
 # Pre-commit hooks
-pre-commit==3.6.0
+pre-commit>=3.6.0
 
 # Additional security tools
-cryptography==41.0.8
-pycryptodome==3.19.0
-python-jose==3.3.0
-passlib==1.7.4
+cryptography>=41.0.0
+pycryptodome>=3.19.0
+python-jose>=3.3.0
+passlib>=1.7.0
 
 # Testing and coverage
-pytest==7.4.3
-pytest-cov==4.1.0
-pytest-mock==3.12.0
-pytest-qt==4.2.0
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+pytest-qt>=4.2.0
 
 # Type checking dependencies
-types-requests==2.31.0.20231225
-types-PyYAML==6.0.12.12
+types-requests>=2.32.0
+types-PyYAML>=6.0.12
 
 # Development tools
-commitizen==3.13.0
-zimports==0.8.0
-pyupgrade==3.15.0 
+commitizen>=3.13.0
+zimports>=0.6.0
+pyupgrade>=3.15.0 
