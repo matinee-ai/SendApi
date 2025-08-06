@@ -1,5 +1,9 @@
+# Build dependencies
+setuptools>=78.1.1
+
+# Core dependencies
 PySide6==6.9.1
-requests==2.31.0
+requests==2.32.4
 python-dotenv==1.0.0
 jsonschema==4.20.0
 pygments==2.17.2

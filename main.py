@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 API Testing Desktop Application
-A Postman-like application for testing APIs with collections, environments, and scripts.
+A SendApi application for testing APIs with collections, environments, and scripts.
 """
 
 import sys

@@ -53,7 +53,7 @@ setup(
     },
     include_package_data=True,
     package_data={
-        "": ["*.json", "*.md"],
+        '': ['data/*.json', 'docs/*.md'],
     },
     keywords="api testing http requests desktop application",
     project_urls={

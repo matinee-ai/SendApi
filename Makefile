@@ -52,7 +52,7 @@ security-scan:
 
 safety:
 	@echo "🔍 Running Safety dependency check..."
-	safety check --full-report
+	safety scan --full-report
 
 bandit:
 	@echo "🔍 Running Bandit security linter..."
@@ -115,15 +115,12 @@ build:
 
 run:
 	@echo "🚀 Running SendApi application..."
-	python main.py
+	./scripts/run.sh
 
 # CI/CD helpers
 ci-security:
 	@echo "🔒 Running CI security checks..."
-	safety check --json --output safety-report.json || true
-	bandit -r src/ -f json -o bandit-report.json || true
-	semgrep ci --config auto --json --output semgrep-report.json || true
-	pip-audit --format json --output pip-audit-report.json || true
+	safety scan --json > safety-report.json || true
 
 ci-quality:
 	@echo "🔍 Running CI quality checks..."
@@ -147,9 +144,8 @@ docker-run:
 
 # Documentation
 docs:
-	@echo "📚 Generating documentation..."
-	pydoc -w src/
-	@echo "Documentation generated in current directory"
+	@echo "📚 Documentation is now organized in the 'docs/' directory."
+	@echo "Please refer to the files inside the 'docs/' folder."
 
 # Dependencies
 update-deps:

@@ -218,7 +218,7 @@ show_next_steps() {
     echo "- make semgrep       - Static analysis"
     echo "- make pip-audit     - Package vulnerabilities"
     echo ""
-    echo "For more information, see SECURITY.md"
+    echo "For more information, see ../docs/SECURITY.md"
     echo "=================================================="
 }
 

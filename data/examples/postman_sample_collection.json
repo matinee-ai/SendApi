@@ -1,0 +1,169 @@
+{
+  "info": {
+    "name": "Sample Postman Collection",
+    "description": "A sample Postman collection with folders and requests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "sample-collection-id"
+  },
+  "item": [
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/users",
+              "protocol": "https",
+              "host": ["jsonplaceholder", "typicode", "com"],
+              "path": ["users"]
+            }
+          },
+          "response": [],
+          "_postman_id": "get-users-id"
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/users/{{user_id}}",
+              "protocol": "https",
+              "host": ["jsonplaceholder", "typicode", "com"],
+              "path": ["users", "{{user_id}}"]
+            }
+          },
+          "response": [],
+          "_postman_id": "get-user-by-id-id"
+        }
+      ],
+      "_postman_id": "user-management-folder-id"
+    },
+    {
+      "name": "Post Management",
+      "item": [
+        {
+          "name": "Get All Posts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": ["jsonplaceholder", "typicode", "com"],
+              "path": ["posts"]
+            }
+          },
+          "response": [],
+          "_postman_id": "get-posts-id"
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Sample Post\",\n  \"body\": \"This is a sample post\",\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": ["jsonplaceholder", "typicode", "com"],
+              "path": ["posts"]
+            }
+          },
+          "response": [],
+          "_postman_id": "create-post-id"
+        }
+      ],
+      "_postman_id": "post-management-folder-id"
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "description": "Username"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "description": "Password"
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://api.example.com/login",
+              "protocol": "https",
+              "host": ["api", "example", "com"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has token\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": [],
+          "_postman_id": "login-id"
+        }
+      ],
+      "_postman_id": "auth-folder-id"
+    }
+  ]
+} 

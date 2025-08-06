@@ -26,18 +26,23 @@ class SecurityScanner:
         """Run Safety dependency vulnerability check"""
         print("🔍 Running Safety dependency vulnerability check...")
         try:
+            # Use 'safety scan' instead of 'safety check'
             result = subprocess.run(
-                ["safety", "check", "--json", "--output", str(self.reports_dir / "safety-report.json")],
+                ["safety", "scan", "--json"],
                 capture_output=True,
                 text=True,
                 cwd=self.project_root
             )
             
             if result.returncode == 0:
-                print("✅ Safety check passed")
+                with open(self.reports_dir / "safety-report.json", "w") as f:
+                    f.write(result.stdout)
+                print("✅ Safety scan passed")
                 return {"status": "passed", "output": result.stdout}
             else:
-                print("⚠️ Safety check found vulnerabilities")
+                with open(self.reports_dir / "safety-report.json", "w") as f:
+                    f.write(result.stdout)
+                print("⚠️ Safety scan found vulnerabilities")
                 return {"status": "failed", "output": result.stderr}
                 
         except FileNotFoundError:

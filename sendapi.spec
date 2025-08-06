@@ -1,3 +1,5 @@
+import os
+
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
@@ -8,11 +10,9 @@ a = Analysis(
     binaries=[],
     datas=[
         ('src', 'src'),
-        ('examples', 'examples'),
+        ('data', 'data'), # Include the entire data directory
         ('README.md', '.'),
-        ('FEATURES.md', '.'),
-        ('QUICKSTART.md', '.'),
-        ('TROUBLESHOOTING.md', '.'),
+        ('docs', 'docs'), # Include the entire docs directory
     ],
     hiddenimports=[
         'PySide6.QtCore',
@@ -53,7 +53,7 @@ exe = EXE(
     upx_exclude=[],
     runtime_tmpdir=None,
     console=False,
-    disable_windowed_traceback=False,
+    disable_windowed_traceback=False, # Re-added this line
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
