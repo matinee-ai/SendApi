@@ -4,15 +4,15 @@ Data models for the API Testing Application
 
 import json
 import uuid
-from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
 class Request:
     """Represents an API request."""
-    
+
     name: str
     method: str = "GET"
     url: str = ""
@@ -26,7 +26,7 @@ class Request:
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat())
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert request to dictionary."""
         return {
@@ -42,11 +42,11 @@ class Request:
             "tests": self.tests,
             "description": self.description,
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Request':
+    def from_dict(cls, data: Dict[str, Any]) -> "Request":
         """Create request from dictionary."""
         return cls(
             id=data.get("id", str(uuid.uuid4())),
@@ -61,39 +61,39 @@ class Request:
             tests=data.get("tests", ""),
             description=data.get("description", ""),
             created_at=data.get("created_at", datetime.now().isoformat()),
-            updated_at=data.get("updated_at", datetime.now().isoformat())
+            updated_at=data.get("updated_at", datetime.now().isoformat()),
         )
 
 
 @dataclass
 class Collection:
     """Represents a collection of API requests."""
-    
+
     name: str
     description: str = ""
     requests: List[Request] = field(default_factory=list)
-    folders: List['Collection'] = field(default_factory=list)
+    folders: List["Collection"] = field(default_factory=list)
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat())
-    
+
     def add_request(self, request: Request):
         """Add a request to the collection."""
         self.requests.append(request)
         self.updated_at = datetime.now().isoformat()
-    
+
     def remove_request(self, request_id: str):
         """Remove a request from the collection."""
         self.requests = [req for req in self.requests if req.id != request_id]
         self.updated_at = datetime.now().isoformat()
-    
+
     def get_request(self, request_id: str) -> Optional[Request]:
         """Get a request by ID."""
         for request in self.requests:
             if request.id == request_id:
                 return request
         return None
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert collection to dictionary."""
         return {
@@ -103,58 +103,58 @@ class Collection:
             "requests": [req.to_dict() for req in self.requests],
             "folders": [folder.to_dict() for folder in self.folders],
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Collection':
+    def from_dict(cls, data: Dict[str, Any]) -> "Collection":
         """Create collection from dictionary."""
         collection = cls(
             id=data.get("id", str(uuid.uuid4())),
             name=data.get("name", ""),
             description=data.get("description", ""),
             created_at=data.get("created_at", datetime.now().isoformat()),
-            updated_at=data.get("updated_at", datetime.now().isoformat())
+            updated_at=data.get("updated_at", datetime.now().isoformat()),
         )
-        
+
         # Load requests
         for req_data in data.get("requests", []):
             request = Request.from_dict(req_data)
             collection.requests.append(request)
-        
+
         # Load folders
         for folder_data in data.get("folders", []):
             folder = Collection.from_dict(folder_data)
             collection.folders.append(folder)
-        
+
         return collection
 
 
 @dataclass
 class Environment:
     """Represents an environment with variables."""
-    
+
     name: str
     variables: Dict[str, str] = field(default_factory=dict)
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat())
-    
+
     def set_variable(self, key: str, value: str):
         """Set an environment variable."""
         self.variables[key] = value
         self.updated_at = datetime.now().isoformat()
-    
+
     def get_variable(self, key: str) -> Optional[str]:
         """Get an environment variable."""
         return self.variables.get(key)
-    
+
     def remove_variable(self, key: str):
         """Remove an environment variable."""
         if key in self.variables:
             del self.variables[key]
             self.updated_at = datetime.now().isoformat()
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert environment to dictionary."""
         return {
@@ -162,25 +162,25 @@ class Environment:
             "name": self.name,
             "variables": self.variables,
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Environment':
+    def from_dict(cls, data: Dict[str, Any]) -> "Environment":
         """Create environment from dictionary."""
         return cls(
             id=data.get("id", str(uuid.uuid4())),
             name=data.get("name", ""),
             variables=data.get("variables", {}),
             created_at=data.get("created_at", datetime.now().isoformat()),
-            updated_at=data.get("updated_at", datetime.now().isoformat())
+            updated_at=data.get("updated_at", datetime.now().isoformat()),
         )
 
 
 @dataclass
 class Response:
     """Represents an API response."""
-    
+
     status_code: int
     headers: Dict[str, str]
     body: str
@@ -189,7 +189,7 @@ class Response:
     url: str
     method: str
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert response to dictionary."""
         return {
@@ -200,11 +200,11 @@ class Response:
             "size": self.size,
             "url": self.url,
             "method": self.method,
-            "timestamp": self.timestamp
+            "timestamp": self.timestamp,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Response':
+    def from_dict(cls, data: Dict[str, Any]) -> "Response":
         """Create response from dictionary."""
         return cls(
             status_code=data.get("status_code", 0),
@@ -214,5 +214,5 @@ class Response:
             size=data.get("size", 0),
             url=data.get("url", ""),
             method=data.get("method", ""),
-            timestamp=data.get("timestamp", datetime.now().isoformat())
-        ) 
+            timestamp=data.get("timestamp", datetime.now().isoformat()),
+        )

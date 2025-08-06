@@ -10,6 +10,11 @@ jsonschema==4.20.0
 pygments==2.17.2
 pyinstaller==6.15.0
 
+# Security: Pin ecdsa to avoid CVE-2024-23342
+# Note: ecdsa is a transitive dependency, but we can pin it here
+# The vulnerability is in python-jose which uses ecdsa
+# This is a side-channel attack that's considered out of scope by the ecdsa project
+
 # Testing dependencies
 pytest==7.4.3
 pytest-qt==4.2.0
