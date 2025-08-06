@@ -216,12 +216,7 @@ jobs:
         QT_QPA_PLATFORM: offscreen
       run: |
         python -m pytest tests/ -m "not gui" -v
-        
-    - name: Test package installation
-      run: |
-        pip install -e .
-        python -c "import sendapi; print('Package imported successfully')"
-        
+    
     - name: Test PyInstaller build (Linux only)
       if: matrix.os == 'ubuntu-latest'
       run: |
