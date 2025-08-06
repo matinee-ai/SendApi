@@ -1,3 +1,0 @@
-([('SendApi',
-   '/Users/val/PycharmProjects/PythonProject/dist/SendApi',
-   'EXECUTABLE')],)
