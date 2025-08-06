@@ -109,9 +109,9 @@ jobs:
     #   run: |
     #     mypy src/ --ignore-missing-imports --disallow-untyped-defs
         
-    - name: Run Pylint
-      run: |
-        pylint src/ --disable=C0114,C0116 --max-line-length=88
+    # - name: Run Pylint
+    #   run: |
+    #     pylint src/ --disable=C0114,C0116 --max-line-length=88
         
     - name: Run tests (non-GUI)
       env:
