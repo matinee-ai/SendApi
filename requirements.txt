@@ -1,3 +1,4 @@
+-i https://pkgs.safetycli.com/repository/matinee-llc/project/sendapi/pypi/simple/
 # Build dependencies
 setuptools>=78.1.1
 

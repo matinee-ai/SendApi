@@ -1,3 +1,4 @@
+-i https://pkgs.safetycli.com/repository/matinee-llc/project/sendapi/pypi/simple/
 # Security scanning and analysis tools
 safety>=2.3.0
 bandit>=1.7.0

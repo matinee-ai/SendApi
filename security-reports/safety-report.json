@@ -1,0 +1,22 @@
+Safety 3.6.0 scanning /Users/val/PycharmProjects/SendApi
+2025-08-06 16:45:59 UTC
+
+Account: Val Pog, kievall@gmail.com 
+Project: sendapi
+ Git branch: dev/security_updates
+ Environment: Stage.development
+ Scan policy: fetched from Safety Platform, ignoring any local Safety CLI policy files
+
+Python detected. Found 1 Python requirement file and 2 Python environments
+
+✅ requirements.txt: No issues found.
+
+✅ .venv_build_x86_64/pyvenv.cfg: No issues found.
+
+✅ .venv/pyvenv.cfg: No issues found.
+
+Tested 61 dependencies for security issues using policy fetched from Safety Platform
+4 vulnerabilities found, 4 ignored due to policy.
+0 fixes suggested, resolving 0 vulnerabilities.
+
+Project dashboard: https://platform.safetycli.com/codebases/sendapi/findings?branch=dev/security_updates
