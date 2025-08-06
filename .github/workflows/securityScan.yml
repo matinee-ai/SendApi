@@ -5,9 +5,9 @@ on:
     # Run daily at 2 AM UTC
     - cron: '0 2 * * *'
   push:
-    branches: [ main, develop ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ develop ]
   workflow_dispatch:
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
     - name: Install system dependencies for PySide6
       run: |
         sudo apt-get update
-        sudo apt-get install -y libegl1-mesa-dev libgl1-mesa-glx libgl1-mesa-dri xvfb
+        sudo apt-get install -y libegl1-mesa-dev libgl1 libgl1-mesa-dri xvfb
         
     - name: Start virtual display
       run: |
@@ -190,7 +190,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libegl1-mesa-dev libgl1-mesa-glx libgl1-mesa-dri xvfb
+        sudo apt-get install -y libegl1-mesa-dev libgl1 libgl1-mesa-dri xvfb
         
     - name: Start virtual display
       if: runner.os == 'Linux'
