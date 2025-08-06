@@ -1,0 +1,43 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build distributions
+      run: |
+        chmod +x scripts/build_distributions.sh
+        ./scripts/build_distributions.sh
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          distributions/*.dmg
+          distributions/*.exe
+          distributions/SECURITY.md
+          distributions/BUILD_SUMMARY.md
+          WINDOWS_INSTALLATION_GUIDE.md
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
