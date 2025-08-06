@@ -22,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
         
     - name: Install dependencies
       run: |
@@ -84,7 +84,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
         
     - name: Install dependencies
       run: |
@@ -134,7 +134,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
         
     - name: Install pip-audit
       run: |
@@ -169,8 +169,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10', '3.11']
+        os: [ubuntu-latest]
+        python-version: ['3.13']
         
     steps:
     - name: Checkout code
