@@ -13,9 +13,9 @@ ImportError: dlopen(...): Symbol not found: __Z13lcPermissionsv
 
 **Solution**: 
 - The application now uses PySide6 6.9.1 which supports Python 3.13
-- If you still encounter issues, try using Python 3.11 or 3.12:
+- If you still encounter issues, try using Python 3.12 or 3.13:
   ```bash
-  # Install Python 3.11 or 3.12
+  # Install Python 3.12 or 3.13
   brew install python@3.11  # macOS
   # or
   python3.11 -m pip install -r requirements.txt

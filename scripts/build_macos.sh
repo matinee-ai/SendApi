@@ -73,7 +73,7 @@ if [ -n "${CONDA_SUBDIR}" ]; then
     export CONDA_SUBDIR
 fi
 
-${CONDA_CMD} create --name ${CONDA_ENV_NAME} python=3.11 --yes
+${CONDA_CMD} create --name ${CONDA_ENV_NAME} python=3.13 --yes
 
 if [ $? -ne 0 ]; then
     echo "Error: Failed to create conda environment."
