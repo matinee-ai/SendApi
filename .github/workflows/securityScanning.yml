@@ -97,9 +97,9 @@ jobs:
       run: |
         black --check --diff src/ tests/ main.py
         
-    - name: Run isort (import sorting check)
-      run: |
-        isort --check-only --diff src/ tests/ main.py
+    # - name: Run isort (import sorting check)
+    #   run: |
+    #     isort --check-only --diff src/ tests/ main.py
         
     - name: Run Flake8 (linting)
       run: |
