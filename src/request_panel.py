@@ -360,13 +360,20 @@ class RequestPanel(QWidget):
     def send_request_clicked(self):
         """Handle send request button click."""
         print(f"RequestPanel: Send button clicked!")
+        
+        # Validate URL
+        url = self.url_edit.text().strip()
+        if not url:
+            print("RequestPanel: URL is empty, not sending request")
+            return
+        
         # Save current request
         self.save_request()
         
         # Prepare request data
         request_data = {
             "method": self.method_combo.currentText(),
-            "url": self.url_edit.text(),
+            "url": url,
             "headers": {},
             "params": {},
             "body": "",

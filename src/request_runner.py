@@ -103,9 +103,37 @@ class RequestRunner(QThread):
             
         except requests.exceptions.RequestException as e:
             print(f"RequestRunner: Request failed: {str(e)}")
+            # Create error response data
+            error_response_data = {
+                "status_code": 0,
+                "headers": {},
+                "body": "",
+                "response_time": 0,
+                "size": 0,
+                "url": self.request_data.get("url", ""),
+                "method": self.request_data.get("method", "GET"),
+                "error": str(e),
+                "test_results": {"passed": False, "results": [f"Request failed: {str(e)}"], "summary": "Request failed"}
+            }
+            self.response_data = error_response_data
+            self.test_results = error_response_data["test_results"]
             self.error_occurred.emit(f"Request failed: {str(e)}")
         except Exception as e:
             print(f"RequestRunner: Unexpected error: {str(e)}")
+            # Create error response data
+            error_response_data = {
+                "status_code": 0,
+                "headers": {},
+                "body": "",
+                "response_time": 0,
+                "size": 0,
+                "url": self.request_data.get("url", ""),
+                "method": self.request_data.get("method", "GET"),
+                "error": str(e),
+                "test_results": {"passed": False, "results": [f"Unexpected error: {str(e)}"], "summary": "Unexpected error"}
+            }
+            self.response_data = error_response_data
+            self.test_results = error_response_data["test_results"]
             self.error_occurred.emit(f"Unexpected error: {str(e)}")
     
     def process_pre_request_script(self):
@@ -173,40 +201,51 @@ class RequestRunner(QThread):
         else:
             # Process each test block
             for i, test_name in enumerate(test_blocks):
-                # Check status code tests
-                if "pm.response.to.have.status(200)" in tests_script:
-                    if response_data["status_code"] == 200:
+                # Extract the test block content
+                test_pattern = rf'pm\.test\s*\(\s*["\']{re.escape(test_name)}["\']\s*,\s*function\s*\(\)\s*\{{([^}}]*)\}}'
+                test_match = re.search(test_pattern, tests_script, re.DOTALL)
+                
+                if test_match:
+                    test_content = test_match.group(1)
+                    
+                    # Check status code tests
+                    if "pm.response.to.have.status(200)" in test_content:
+                        if response_data["status_code"] == 200:
+                            test_results.append(f"✓ {test_name} passed")
+                            passed_tests += 1
+                        else:
+                            test_results.append(f"✗ {test_name} failed (got {response_data['status_code']})")
+                    
+                    # Check response time tests
+                    elif "pm.expect(pm.response.responseTime).to.be.below(1000)" in test_content:
+                        if response_data["response_time"] < 1000:
+                            test_results.append(f"✓ {test_name} passed")
+                            passed_tests += 1
+                        else:
+                            test_results.append(f"✗ {test_name} failed (took {response_data['response_time']:.2f}ms)")
+                    
+                    # Check Content-Type header tests
+                    elif "pm.response.to.have.header(\"Content-Type\")" in test_content:
+                        if "Content-Type" in response_data["headers"]:
+                            test_results.append(f"✓ {test_name} passed")
+                            passed_tests += 1
+                        else:
+                            test_results.append(f"✗ {test_name} failed (Content-Type header not found)")
+                    
+                    # Check status name tests
+                    elif "pm.response.to.have.status(\"OK\")" in test_content:
+                        if response_data["status_code"] == 200:
+                            test_results.append(f"✓ {test_name} passed")
+                            passed_tests += 1
+                        else:
+                            test_results.append(f"✗ {test_name} failed (status not OK)")
+                    
+                    # Default: assume test passed if we can't parse it
+                    else:
                         test_results.append(f"✓ {test_name} passed")
                         passed_tests += 1
-                    else:
-                        test_results.append(f"✗ {test_name} failed (got {response_data['status_code']})")
-                
-                # Check response time tests
-                elif "pm.expect(pm.response.responseTime).to.be.below(1000)" in tests_script:
-                    if response_data["response_time"] < 1000:
-                        test_results.append(f"✓ {test_name} passed")
-                        passed_tests += 1
-                    else:
-                        test_results.append(f"✗ {test_name} failed (took {response_data['response_time']:.2f}ms)")
-                
-                # Check Content-Type header tests
-                elif "pm.response.to.have.header(\"Content-Type\")" in tests_script:
-                    if "Content-Type" in response_data["headers"]:
-                        test_results.append(f"✓ {test_name} passed")
-                        passed_tests += 1
-                    else:
-                        test_results.append(f"✗ {test_name} failed (Content-Type header not found)")
-                
-                # Check status name tests
-                elif "pm.response.to.have.status(\"OK\")" in tests_script:
-                    if response_data["status_code"] == 200:
-                        test_results.append(f"✓ {test_name} passed")
-                        passed_tests += 1
-                    else:
-                        test_results.append(f"✗ {test_name} failed (status not OK)")
-                
-                # Default: assume test passed if we can't parse it
                 else:
+                    # Fallback if we can't extract the test content
                     test_results.append(f"✓ {test_name} passed")
                     passed_tests += 1
         

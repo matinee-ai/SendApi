@@ -54,6 +54,7 @@ class EnvironmentPanel(QWidget):
         self.variables_table.setHorizontalHeaderLabels(["Variable", "Value"])
         self.variables_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.variables_table.setMaximumHeight(200)
+        self.variables_table.itemChanged.connect(self.on_variable_changed)
         vars_layout.addWidget(self.variables_table)
         
         # Variable buttons
@@ -140,6 +141,23 @@ class EnvironmentPanel(QWidget):
     def get_current_environment(self):
         """Get the currently selected environment."""
         return self.current_environment
+    
+    def on_variable_changed(self, item):
+        """Handle variable table item changes."""
+        if not self.current_environment:
+            return
+        
+        row = item.row()
+        key_item = self.variables_table.item(row, 0)
+        value_item = self.variables_table.item(row, 1)
+        
+        if key_item and value_item:
+            key = key_item.text().strip()
+            value = value_item.text().strip()
+            
+            if key:  # Only update if key is not empty
+                self.current_environment.set_variable(key, value)
+                self.environment_changed.emit(self.current_environment)
     
     def rename_environment(self):
         """Rename the current environment."""

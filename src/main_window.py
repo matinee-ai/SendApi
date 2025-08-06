@@ -426,9 +426,9 @@ class MainWindow(QMainWindow):
         # Add body
         if request.body and request.body_type != 'none':
             if request.body_type == 'raw':
-                curl_parts.append(f'-d \'{request.body}\'')
+                curl_parts.append(f'--data-raw \'{request.body}\'')
             elif request.body_type == 'x-www-form-urlencoded':
-                curl_parts.append(f'-d "{request.body}"')
+                curl_parts.append(f'--data-raw "{request.body}"')
             elif request.body_type == 'form-data':
                 # Handle form data
                 try:
@@ -437,12 +437,14 @@ class MainWindow(QMainWindow):
                     for key, value in form_data.items():
                         curl_parts.append(f'-F "{key}={value}"')
                 except:
-                    curl_parts.append(f'-d "{request.body}"')
+                    curl_parts.append(f'--data-raw "{request.body}"')
         
         # Add URL
         curl_parts.append(f'"{url}"')
         
-        return " ".join(curl_parts)
+        generated_curl = " ".join(curl_parts)
+        print(f"DEBUG: Generated cURL command: {generated_curl}") # Debug print
+        return generated_curl
     
     def export_collection(self):
         """Export a collection to file."""

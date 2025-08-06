@@ -40,6 +40,7 @@ class BatchRequestRunner(QThread):
                 "pre_request_script": request.pre_request_script,
                 "tests": request.tests
             }
+            print(f"DEBUG: Request data passed to RequestRunner: {request_data}") # Debug print
             
             try:
                 # Create and run single request synchronously
