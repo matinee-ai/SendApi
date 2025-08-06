@@ -1,4 +1,4 @@
-name: PullRequestValidation
+name: Pull Request Validation
 
 on:
   pull_request:
@@ -27,10 +27,10 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-security.txt
         
-    - name: Run Safety check
-      run: |
-        safety check --json --output safety-report.json || true
-        safety check --full-report
+    - name: Run Safety CLI to check for vulnerabilities
+      uses: pyupio/safety-action@v1
+      with:
+        api-key: ${{ secrets.SAFETY_API_KEY }}
         
     - name: Run Bandit security scan
       run: |
@@ -53,7 +53,6 @@ jobs:
       with:
         name: security-reports-${{ github.run_number }}
         path: |
-          safety-report.json
           bandit-report.json
           semgrep-report.json
           pip-audit-report.json
@@ -111,7 +110,12 @@ jobs:
     - name: Install system dependencies for PySide6
       run: |
         sudo apt-get update
-        sudo apt-get install -y libegl1-mesa libgl1-mesa-glx
+        sudo apt-get install -y libegl1-mesa-dev libgl1 libgl1-mesa-dri xvfb
+        
+    - name: Start virtual display
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
         
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -199,20 +203,20 @@ jobs:
       uses: actions/download-artifact@v4
       
     - name: Create security summary
+      env:
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BRANCH_NAME: ${{ github.head_ref }}
+        COMMIT_SHA: ${{ github.sha }}
       run: |
         echo "## 🔒 Security Validation Summary" > security-summary.md
-        echo "**PR:** #${{ github.event.pull_request.number }}" >> security-summary.md
-        echo "**Branch:** ${{ github.head_ref }}" >> security-summary.md
-        echo "**Commit:** ${{ github.sha }}" >> security-summary.md
+        echo "**PR:** #$PR_NUMBER" >> security-summary.md
+        echo "**Branch:** $BRANCH_NAME" >> security-summary.md
+        echo "**Commit:** $COMMIT_SHA" >> security-summary.md
         echo "**Date:** $(date)" >> security-summary.md
         echo "" >> security-summary.md
         
         echo "### 📊 Security Checks" >> security-summary.md
-        if [ -f "safety-report.json" ]; then
-          echo "✅ **Safety (Dependencies):** Report generated" >> security-summary.md
-        else
-          echo "❌ **Safety (Dependencies):** No report found" >> security-summary.md
-        fi
+        echo "✅ **Safety (Dependencies):** Checked via Safety CLI action" >> security-summary.md
         
         if [ -f "bandit-report.json" ]; then
           echo "✅ **Bandit (Python Security):** Report generated" >> security-summary.md
