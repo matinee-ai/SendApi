@@ -31,17 +31,12 @@ jobs:
         pip install -r requirements.txt
         pip install safety bandit semgrep
         
-    - name: Run Safety (dependency vulnerability scan)
-      run: |
-        safety scan --json > safety-report.json || true
-        safety scan --full-report
-        
-    - name: Upload Safety report
-      uses: actions/upload-artifact@v4
-      if: always()
+    - name: Run Safety CLI to check for vulnerabilities
+      uses: pyupio/safety-action@v1
       with:
-        name: safety-report
-        path: safety-report.json
+        api-key: ${{ secrets.SAFETY_API_KEY }}
+        
+
         
     - name: Run Bandit (Python security linter)
       run: |
@@ -234,10 +229,8 @@ jobs:
         echo "Date: $(date)" >> security-summary.md
         echo "" >> security-summary.md
         
-        if [ -f "safety-report.json" ]; then
-          echo "### Safety (Dependency Vulnerabilities)" >> security-summary.md
-          echo "- Report generated" >> security-summary.md
-        fi
+        echo "### Safety (Dependency Vulnerabilities)" >> security-summary.md
+        echo "- Checked via Safety CLI action" >> security-summary.md
         
         if [ -f "bandit-report.json" ]; then
           echo "### Bandit (Python Security Issues)" >> security-summary.md
