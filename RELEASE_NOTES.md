@@ -11,7 +11,7 @@
 ## 📦 Downloads
 
 ### macOS
-- **Apple Silicon (M1/M2/M3)**: [SendApi-1.0.0-Apple-Silicon.dmg](distributions/SendApi-1.0.0-Apple-Silicon.dmg) (144M)
+- **Apple Silicon (M1/M2/M3/M4)**: [SendApi-1.0.0-Apple-Silicon.dmg](distributions/SendApi-1.0.0-Apple-Silicon.dmg) (144M)
 - **Intel Macs**: [SendApi-1.0.0-Intel.dmg](distributions/SendApi-1.0.0-Intel.dmg) (4.0K)
 
 ### Windows
@@ -23,7 +23,8 @@
 1. Download the appropriate DMG file for your Mac
 2. Double-click to mount the DMG
 3. Drag SendApi.app to Applications folder
-4. Run from Applications
+4. After downloading on macOS, you may need to run xattr -cr to bypass Gatekeeper during local testing: xattr -cr SendApi.app
+5. Run from Applications
 
 ### Windows
 1. Download the Windows executable
