@@ -34,7 +34,7 @@ jobs:
           distributions/*.dmg
           distributions/*.exe
           docs/SECURITY.md
-          distributions/BUILD_SUMMARY.md
+          docs/BUILD_SUMMARY.md
           docs/WINDOWS_INSTALLATION_GUIDE.md
         body_path: RELEASE_NOTES.md
         draft: false
