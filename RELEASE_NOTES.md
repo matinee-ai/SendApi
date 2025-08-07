@@ -23,8 +23,9 @@
 1. Download the appropriate DMG file for your Mac
 2. Double-click to mount the DMG
 3. Drag SendApi.app to Applications folder
-4. After downloading on macOS, you may need to run xattr -cr to bypass Gatekeeper during local testing: xattr -cr SendApi.app
-5. Run from Applications
+4. After downloading on macOS, you may need to run xattr -cr to bypass Gatekeeper during local testing:
+   ```xattr -cr SendApi.app```
+6. Run from Applications
 
 ### Windows
 1. Download the Windows executable
