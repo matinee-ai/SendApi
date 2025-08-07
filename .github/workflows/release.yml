@@ -33,9 +33,9 @@ jobs:
         files: |
           distributions/*.dmg
           distributions/*.exe
-          distributions/SECURITY.md
+          docs/SECURITY.md
           distributions/BUILD_SUMMARY.md
-          WINDOWS_INSTALLATION_GUIDE.md
+          docs/WINDOWS_INSTALLATION_GUIDE.md
         body_path: RELEASE_NOTES.md
         draft: false
         prerelease: false
